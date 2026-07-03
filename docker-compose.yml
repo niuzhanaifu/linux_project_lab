@@ -1,0 +1,17 @@
+services:
+  lab:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        BUILDROOT_VERSION: "${BUILDROOT_VERSION:-2026.02.3}"
+    image: "${LOCAL_LAB_IMAGE:-linux-edge-lab:lab01}"
+    working_dir: /work
+    user: "${LAB_UID:-1000}:${LAB_GID:-1000}"
+    environment:
+      BUILDROOT_VERSION: "${BUILDROOT_VERSION:-2026.02.3}"
+      BUILDROOT_DIR: "/opt/buildroot-${BUILDROOT_VERSION:-2026.02.3}"
+      BUILDROOT_DL_DIR: /work/.cache/dl
+      HOME: /tmp
+    volumes:
+      - .:/work

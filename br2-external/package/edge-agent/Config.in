@@ -1,0 +1,5 @@
+config BR2_PACKAGE_EDGE_AGENT
+	bool "edge-agent"
+	help
+	  Minimal user-space agent used by the lab series.
+

@@ -1,0 +1,48 @@
+name: lab01
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  qemu-build-and-test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Export host UID/GID for Docker
+        run: |
+          echo "LAB_UID=$(id -u)" >> "$GITHUB_ENV"
+          echo "LAB_GID=$(id -g)" >> "$GITHUB_ENV"
+
+      - name: Cache Buildroot downloads
+        uses: actions/cache@v4
+        with:
+          path: .cache/dl
+          key: buildroot-dl-${{ runner.os }}-${{ hashFiles('boards/qemu-aarch64/buildroot_fragment') }}
+          restore-keys: |
+            buildroot-dl-${{ runner.os }}-
+
+      - name: Build lab container
+        run: docker compose build lab
+
+      - name: Build Lab01 image
+        run: docker compose run --rm lab make lab01-build
+
+      - name: Boot Lab01 image
+        run: docker compose run --rm lab make lab01-run
+
+      - name: Check Lab01 output
+        run: docker compose run --rm lab make lab01-check
+
+      - name: Upload serial log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lab01-serial-log
+          path: artifacts/lab01/serial.log

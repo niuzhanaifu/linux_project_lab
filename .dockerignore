@@ -1,0 +1,13 @@
+.cache/
+.git/
+.github/
+.agents/
+artifacts/
+output/
+*.log
+*.o
+*.elf
+*.bin
+*.img
+reddit*.png
+

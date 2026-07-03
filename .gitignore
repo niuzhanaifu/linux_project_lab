@@ -1,0 +1,9 @@
+.cache/
+artifacts/
+output/
+*.log
+*.o
+*.elf
+*.bin
+*.img
+/apps/edge-agent/edge-agent

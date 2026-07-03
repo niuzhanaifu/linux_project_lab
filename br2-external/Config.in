@@ -1,0 +1,2 @@
+source "$BR2_EXTERNAL_EDGE_LAB_PATH/package/edge-agent/Config.in"
+
