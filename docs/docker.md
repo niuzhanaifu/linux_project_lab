@@ -1,6 +1,6 @@
 # Docker Workflow
 
-Docker is the required student path. Students only need Docker; the container provides `make`, Buildroot host dependencies, the pinned Buildroot source tree, and QEMU.
+Docker is the required student path. Students only need Docker; the container provides `make`, Buildroot host dependencies, the pinned Buildroot source tree, QEMU, and the optional preloaded Buildroot download cache.
 The prebuilt image also includes the pinned Buildroot source tree under `/opt/buildroot-$BUILDROOT_VERSION`.
 
 ## Why Docker
@@ -9,6 +9,7 @@ The prebuilt image also includes the pinned Buildroot source tree under `/opt/bu
 - Avoids asking students to install Buildroot dependencies one by one.
 - Keeps QEMU inside the lab container.
 - Keeps the pinned Buildroot source inside the lab container.
+- Can preload Buildroot package downloads into the image to reduce student-side downloads.
 - Reuses `.cache/` and `output/` through the mounted repository directory.
 
 ## Teacher and CI Image Build
@@ -24,7 +25,16 @@ docker compose run --rm lab make lab01-run
 docker compose run --rm lab make lab01-check
 ```
 
-The Docker image build downloads the pinned Buildroot source into `/opt`. The first Lab01 build can still download package sources into `.cache/dl`, so it can take a while. Later runs reuse the cache.
+The Docker image build downloads the pinned Buildroot source into `/opt`. The first teacher-side Lab01 build can still download package sources into `.cache/dl`, so it can take a while.
+
+Before publishing, copy the populated cache into the Docker preload context and rebuild the image:
+
+```sh
+make docker-preload-dl
+docker compose build lab
+```
+
+The rebuilt image stores the cache under `/opt/buildroot-dl`. When students run the container, the entrypoint copies missing files from `/opt/buildroot-dl` into the mounted repository cache at `.cache/dl`.
 
 ## Student Setup
 

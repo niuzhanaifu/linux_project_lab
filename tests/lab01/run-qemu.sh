@@ -35,6 +35,7 @@ mkdir -p "$(dirname "${LOG_FILE}")"
     -cpu cortex-a53 \
     -m 512M \
     -nographic \
+    -nic none \
     -kernel "${KERNEL}" \
     -append "console=ttyAMA0 root=/dev/vda rw panic=-1" \
     -drive "file=${ROOTFS},if=none,format=raw,id=hd0" \

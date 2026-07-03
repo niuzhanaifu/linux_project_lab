@@ -8,7 +8,7 @@ LAB01_LOG ?= $(ROOT_DIR)/artifacts/lab01/serial.log
 DOCKER_COMPOSE ?= docker compose
 LAB_IMAGE ?= ghcr.io/your-org/linux-edge-lab:lab01
 
-.PHONY: help lab01-fetch lab01-defconfig lab01-build lab01-run lab01-check lab01-clean edge-agent-native docker-build docker-shell docker-lab01-build docker-lab01-run docker-lab01-check docker-lab01 docker-image-build docker-image-push student-pull student-lab01-build student-lab01-run student-lab01-check student-lab01
+.PHONY: help lab01-fetch lab01-defconfig lab01-build lab01-run lab01-check lab01-clean edge-agent-native docker-preload-dl docker-build docker-shell docker-lab01-build docker-lab01-run docker-lab01-check docker-lab01 docker-image-build docker-image-push student-pull student-lab01-build student-lab01-run student-lab01-check student-lab01
 
 help:
 	@printf "%s\n" "Targets:"
@@ -16,6 +16,7 @@ help:
 	@printf "%s\n" "  make lab01-run         Boot the image with QEMU and capture serial log"
 	@printf "%s\n" "  make lab01-check       Validate Lab01 serial log"
 	@printf "%s\n" "  make edge-agent-native Build edge-agent for the host"
+	@printf "%s\n" "  make docker-preload-dl Copy .cache/dl into Docker image preload context"
 	@printf "%s\n" "  make docker-lab01      Run Lab01 through Docker"
 	@printf "%s\n" "  make student-lab01     Maintainer smoke test with prebuilt image"
 	@printf "%s\n" "  make docker-image-push Push LAB_IMAGE to registry"
@@ -48,6 +49,9 @@ edge-agent-native:
 
 lab01-clean:
 	rm -rf "$(BUILD_DIR)" "$(ROOT_DIR)/artifacts/lab01"
+
+docker-preload-dl:
+	bash scripts/preload-buildroot-dl.sh
 
 docker-build:
 	$(DOCKER_COMPOSE) build lab

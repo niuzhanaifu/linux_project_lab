@@ -22,6 +22,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     perl \
     python3 \
     qemu-system-arm \
+    qemu-system-data \
     qemu-utils \
     rsync \
     tar \
@@ -34,6 +35,12 @@ RUN curl -L "https://buildroot.org/downloads/buildroot-${BUILDROOT_VERSION}.tar.
     | tar -C /opt -xJ \
   && chmod -R a+rX "/opt/buildroot-${BUILDROOT_VERSION}"
 
+COPY docker/buildroot-dl/ /opt/buildroot-dl/
+COPY scripts/lab-entrypoint.sh /usr/local/bin/lab-entrypoint.sh
+
+RUN chmod -R a+rX /opt/buildroot-dl \
+  && chmod 0755 /usr/local/bin/lab-entrypoint.sh
+
 ENV LANG=C.UTF-8
 ENV LC_ALL=C.UTF-8
 ENV HOME=/tmp
@@ -43,4 +50,5 @@ ENV BUILDROOT_DL_DIR=/work/.cache/dl
 
 WORKDIR /work
 
+ENTRYPOINT ["/usr/local/bin/lab-entrypoint.sh"]
 CMD ["bash"]

@@ -1,6 +1,8 @@
 .cache/
 artifacts/
 output/
+docker/buildroot-dl/*
+!docker/buildroot-dl/.gitkeep
 *.log
 *.o
 *.elf

@@ -10,4 +10,5 @@ output/
 *.bin
 *.img
 reddit*.png
-
+!docker/buildroot-dl/
+!docker/buildroot-dl/**

@@ -1,4 +1,4 @@
-# 教师发布与学生使用流程
+﻿# 教师发布与学生使用流程
 
 这份文档描述课程发布的完整路径：教师在云服务器上构建并发布预构建 Docker 镜像，学生只拉取仓库和 Docker 镜像，不在宿主机安装 `make`、Buildroot 源码、交叉编译工具链或 QEMU。
 
@@ -88,7 +88,31 @@ LAB01 PASS: student_demo
 
 如果这一步失败，不要发布镜像。先修复仓库或 Dockerfile，再重新构建。
 
-### 6. 推送镜像
+### 6. 把 Buildroot 下载缓存打进镜像
+
+第一次 `lab01-build` 会把 Buildroot package 源码包下载到：
+
+```text
+.cache/dl/
+```
+
+为了让学生构建时尽量不再下载这些包，把这个缓存复制到 Docker 构建上下文，然后重新构建一次镜像：
+
+```sh
+make docker-preload-dl
+docker compose build lab
+```
+
+第二次构建会复用前面的 Docker 缓存，通常只新增包含 `/opt/buildroot-dl` 的镜像层。学生运行容器时，入口脚本会把 `/opt/buildroot-dl` 同步到仓库的 `.cache/dl`，Buildroot 就可以直接使用这些源码包。
+
+如果后续实验新增了 Buildroot package，教师需要重新运行对应实验构建，让 `.cache/dl` 补齐新包，然后再次执行：
+
+```sh
+make docker-preload-dl
+docker compose build lab
+```
+
+### 7. 推送镜像
 
 登录镜像仓库：
 
@@ -112,7 +136,7 @@ docker push "$LAB_IMAGE_LATEST"
 
 建议课程镜像设为公开镜像。私有镜像也可以，但每个学生都需要先执行 `docker login`。
 
-### 7. 更新学生 Compose 默认镜像
+### 8. 更新学生 Compose 默认镜像
 
 编辑 `docker-compose.student.yml`，把默认镜像改成正式发布的镜像 tag：
 
@@ -124,7 +148,7 @@ services:
 
 正常教学路径下，学生不应该手动设置 `LAB_IMAGE`。仓库里的默认值应该直接可用。
 
-### 8. 提交并推送仓库
+### 9. 提交并推送仓库
 
 ```sh
 git add docker-compose.student.yml README.md docs/
@@ -132,7 +156,7 @@ git commit -m "chore: publish lab01 student image"
 git push
 ```
 
-### 9. 模拟学生环境验证
+### 10. 模拟学生环境验证
 
 建议用另一台干净虚拟机验证。如果没有，也至少用新目录验证：
 
@@ -313,6 +337,7 @@ docker compose -f docker-compose.student.yml pull lab
 
 - `docker compose build lab` 成功；
 - 当前实验的 build/run/check 全部通过；
+- 已执行 `make docker-preload-dl` 并重新构建镜像；
 - 预构建镜像已经推送到学生可访问的仓库；
 - `docker-compose.student.yml` 默认镜像已经改成正式 tag；
 - 学生验证流程只使用 `docker-compose.student.yml`；
@@ -348,6 +373,6 @@ docker compose -f docker-compose.student.yml run --rm lab make lab01-build
 
 ### 第一次构建仍然下载源码包
 
-镜像里已经包含 Buildroot 源码和 QEMU。Buildroot 的 package 源码包默认会下载到仓库的 `.cache/dl`，第一次构建可能仍需要网络访问。
+镜像里已经包含 Buildroot 源码、QEMU 和发布前预热过的 Buildroot package 下载缓存。容器启动时会把镜像内的 `/opt/buildroot-dl` 同步到仓库的 `.cache/dl`。
 
-如果希望学生侧尽量不下载 package 源码包，可以在后续优化中把 `.cache/dl` 预热后打进镜像，或者单独发布缓存包。
+如果学生侧第一次构建仍然下载源码包，通常说明教师发布镜像前没有执行 `make docker-preload-dl` 后重新构建镜像，或者新实验新增了缓存里没有的 package。
