@@ -5,7 +5,7 @@ import sys
 from pathlib import Path
 
 
-DEVICE_RE = re.compile(r"edge-agent: device_id=(?P<device_id>student_[a-z0-9_-]+)")
+DEVICE_RE = re.compile(r"edge-agent: device_id=(?P<device_id>student_[0-9_-]+)")
 
 
 def main() -> int:
@@ -32,7 +32,7 @@ def main() -> int:
 
     match = DEVICE_RE.search(text)
     if not match:
-        print("LAB01 FAIL: device_id must match student_[a-z0-9_-]+")
+        print("LAB01 FAIL: device_id must match student_[0-9_-]+")
         return 1
 
     print(f"LAB01 PASS: {match.group('device_id')}")
