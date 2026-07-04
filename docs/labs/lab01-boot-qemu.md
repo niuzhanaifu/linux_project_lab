@@ -24,9 +24,7 @@ The value must start with `student_` and only use lowercase letters, digits, `_`
 
 ```sh
 docker compose -f docker-compose.student.yml pull lab
-docker compose -f docker-compose.student.yml run --rm lab make lab01-build
-docker compose -f docker-compose.student.yml run --rm lab make lab01-run
-docker compose -f docker-compose.student.yml run --rm lab make lab01-check
+docker compose -f docker-compose.student.yml run --rm lab make lab01
 ```
 
 The host only needs Docker. `make`, Buildroot, and QEMU run inside the lab container.

@@ -20,9 +20,7 @@ Install Docker Engine and the Compose plugin on the server, then build and valid
 export LAB_UID=$(id -u)
 export LAB_GID=$(id -g)
 docker compose build lab
-docker compose run --rm lab make lab01-build
-docker compose run --rm lab make lab01-run
-docker compose run --rm lab make lab01-check
+docker compose run --rm lab make lab01
 ```
 
 The Docker image build downloads the pinned Buildroot source into `/opt`. The first teacher-side Lab01 build can still download package sources into `.cache/dl`, so it can take a while.
@@ -44,9 +42,7 @@ Then run:
 
 ```sh
 docker compose -f docker-compose.student.yml pull lab
-docker compose -f docker-compose.student.yml run --rm lab make lab01-build
-docker compose -f docker-compose.student.yml run --rm lab make lab01-run
-docker compose -f docker-compose.student.yml run --rm lab make lab01-check
+docker compose -f docker-compose.student.yml run --rm lab make lab01
 ```
 
 Students do not build the Docker image locally and do not install host `make`, QEMU, Buildroot, or a cross toolchain. The `make` command runs inside the prebuilt container.
@@ -58,7 +54,7 @@ On Linux hosts, pass your UID/GID if generated files become root-owned:
 ```sh
 export LAB_UID=$(id -u)
 export LAB_GID=$(id -g)
-docker compose -f docker-compose.student.yml run --rm lab make lab01-build
+docker compose -f docker-compose.student.yml run --rm lab make lab01
 ```
 
 ## Faster Course Delivery

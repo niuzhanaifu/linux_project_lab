@@ -33,9 +33,7 @@ tests/lab01/              # QEMU 启动和自动验收脚本
 git clone <your-repo-url> linux-edge-lab
 cd linux-edge-lab
 docker compose -f docker-compose.student.yml pull lab
-docker compose -f docker-compose.student.yml run --rm lab make lab01-build
-docker compose -f docker-compose.student.yml run --rm lab make lab01-run
-docker compose -f docker-compose.student.yml run --rm lab make lab01-check
+docker compose -f docker-compose.student.yml run --rm lab make lab01
 ```
 
 后续实验同步仓库即可：

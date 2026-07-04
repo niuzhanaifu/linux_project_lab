@@ -75,9 +75,7 @@ docker compose build lab
 ### 5. 在云服务器验证 Lab01
 
 ```sh
-docker compose run --rm lab make lab01-build
-docker compose run --rm lab make lab01-run
-docker compose run --rm lab make lab01-check
+docker compose run --rm lab make lab01
 ```
 
 成功时应看到类似输出：
@@ -164,9 +162,7 @@ git push
 git clone <your-repo-url> linux-edge-lab-student-check
 cd linux-edge-lab-student-check
 docker compose -f docker-compose.student.yml pull lab
-docker compose -f docker-compose.student.yml run --rm lab make lab01-build
-docker compose -f docker-compose.student.yml run --rm lab make lab01-run
-docker compose -f docker-compose.student.yml run --rm lab make lab01-check
+docker compose -f docker-compose.student.yml run --rm lab make lab01
 ```
 
 确认验证流程里没有执行：
@@ -215,9 +211,7 @@ docker login <registry-domain>
 ### 4. 运行 Lab01
 
 ```sh
-docker compose -f docker-compose.student.yml run --rm lab make lab01-build
-docker compose -f docker-compose.student.yml run --rm lab make lab01-run
-docker compose -f docker-compose.student.yml run --rm lab make lab01-check
+docker compose -f docker-compose.student.yml run --rm lab make lab01
 ```
 
 成功时应看到：
@@ -258,9 +252,7 @@ apps/edge-agent/main.c
 重新运行：
 
 ```sh
-docker compose -f docker-compose.student.yml run --rm lab make lab01-build
-docker compose -f docker-compose.student.yml run --rm lab make lab01-run
-docker compose -f docker-compose.student.yml run --rm lab make lab01-check
+docker compose -f docker-compose.student.yml run --rm lab make lab01
 ```
 
 ## 后续发布 Lab02、Lab03
@@ -360,7 +352,7 @@ docker compose -f docker-compose.student.yml run --rm lab make lab01-run
 说明学生可能直接在宿主机执行了 `make`。正确命令是：
 
 ```sh
-docker compose -f docker-compose.student.yml run --rm lab make lab01-build
+docker compose -f docker-compose.student.yml run --rm lab make lab01
 ```
 
 ### 学生拉不到镜像

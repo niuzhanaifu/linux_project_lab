@@ -13,9 +13,7 @@ After cloning or updating the repository, run the student Compose file:
 
 ```sh
 docker compose -f docker-compose.student.yml pull lab
-docker compose -f docker-compose.student.yml run --rm lab make lab01-build
-docker compose -f docker-compose.student.yml run --rm lab make lab01-run
-docker compose -f docker-compose.student.yml run --rm lab make lab01-check
+docker compose -f docker-compose.student.yml run --rm lab make lab01
 ```
 
 The `make` command above runs inside the container. The host only runs Docker.
