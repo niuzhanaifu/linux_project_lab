@@ -37,25 +37,25 @@ cd linux-edge-lab
 
 ### 3. 选择镜像地址
 
-选择一个对学生可访问的镜像仓库。推荐同时准备固定版本 tag 和当前实验 tag：
+选择一个对学生可访问的镜像仓库。推荐同时准备正式版本 tag 和稳定别名 tag：
 
 ```sh
-export IMAGE_REPO=registry.cn-hangzhou.aliyuncs.com/<namespace>/linux-edge-lab
-export LAB_IMAGE_VERSION="$IMAGE_REPO:lab01-20260703"
-export LAB_IMAGE_LATEST="$IMAGE_REPO:lab01"
+export IMAGE_REPO=ghcr.io/niuzhanaifu/linux-project-lab
+export LAB_IMAGE_VERSION="$IMAGE_REPO:lab-v0.0.1"
+export LAB_IMAGE_LATEST="$IMAGE_REPO:lab-stable"
 export LOCAL_LAB_IMAGE="$LAB_IMAGE_VERSION"
 ```
 
-也可以使用 GHCR：
+如果以后迁移到阿里云，只需要替换 `IMAGE_REPO`：
 
 ```sh
-export IMAGE_REPO=ghcr.io/<org>/linux-edge-lab
-export LAB_IMAGE_VERSION="$IMAGE_REPO:lab01-20260703"
-export LAB_IMAGE_LATEST="$IMAGE_REPO:lab01"
+export IMAGE_REPO=registry.cn-hangzhou.aliyuncs.com/<namespace>/linux-project-lab
+export LAB_IMAGE_VERSION="$IMAGE_REPO:lab-v0.0.1"
+export LAB_IMAGE_LATEST="$IMAGE_REPO:lab-stable"
 export LOCAL_LAB_IMAGE="$LAB_IMAGE_VERSION"
 ```
 
-固定版本 tag 方便复现，当前实验 tag 方便课堂使用。
+正式版本 tag 方便复现，稳定别名 tag 方便课堂临时更新。仓库默认镜像建议使用正式版本 tag。
 
 ### 4. 构建教师镜像
 
@@ -143,7 +143,7 @@ docker push "$LAB_IMAGE_LATEST"
 ```yaml
 services:
   lab:
-    image: "${LAB_IMAGE:-registry.cn-hangzhou.aliyuncs.com/<namespace>/linux-edge-lab:lab01-20260703}"
+    image: "${LAB_IMAGE:-ghcr.io/niuzhanaifu/linux-project-lab:lab-v0.0.1}"
 ```
 
 正常教学路径下，学生不应该手动设置 `LAB_IMAGE`。仓库里的默认值应该直接可用。
@@ -295,9 +295,9 @@ git pull
 如果新实验需要修改 Docker 镜像，教师必须重新构建并发布镜像：
 
 ```sh
-export IMAGE_REPO=registry.cn-hangzhou.aliyuncs.com/<namespace>/linux-edge-lab
-export LAB_IMAGE_VERSION="$IMAGE_REPO:lab02-20260710"
-export LAB_IMAGE_LATEST="$IMAGE_REPO:lab02"
+export IMAGE_REPO=ghcr.io/niuzhanaifu/linux-project-lab
+export LAB_IMAGE_VERSION="$IMAGE_REPO:lab-v0.0.2"
+export LAB_IMAGE_LATEST="$IMAGE_REPO:lab-stable"
 export LOCAL_LAB_IMAGE="$LAB_IMAGE_VERSION"
 
 docker compose build lab

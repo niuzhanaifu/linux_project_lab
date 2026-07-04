@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
       args:
         BUILDROOT_VERSION: "${BUILDROOT_VERSION:-2026.02.3}"
-    image: "${LOCAL_LAB_IMAGE:-linux-edge-lab:lab01}"
+    image: "${LOCAL_LAB_IMAGE:-linux-project-lab:lab-v0.0.1}"
     working_dir: /work
     user: "${LAB_UID:-1000}:${LAB_GID:-1000}"
     environment:

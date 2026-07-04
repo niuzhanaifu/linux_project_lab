@@ -1,7 +1,6 @@
 services:
   lab:
-    # Replace this default with the public course image before publishing.
-    image: "${LAB_IMAGE:-ghcr.io/your-org/linux-edge-lab:lab01}"
+    image: "${LAB_IMAGE:-ghcr.io/niuzhanaifu/linux-project-lab:lab-v0.0.1}"
     working_dir: /work
     user: "${LAB_UID:-1000}:${LAB_GID:-1000}"
     environment:

@@ -6,7 +6,7 @@ BUILD_DIR ?= $(ROOT_DIR)/output/qemu-aarch64
 BR2_EXTERNAL ?= $(ROOT_DIR)/br2-external
 LAB01_LOG ?= $(ROOT_DIR)/artifacts/lab01/serial.log
 DOCKER_COMPOSE ?= docker compose
-LAB_IMAGE ?= ghcr.io/your-org/linux-edge-lab:lab01
+LAB_IMAGE ?= ghcr.io/niuzhanaifu/linux-project-lab:lab-v0.0.1
 
 .PHONY: help lab01-fetch lab01-defconfig lab01-build lab01-run lab01-check lab01-clean edge-agent-native docker-preload-dl docker-build docker-shell docker-lab01-build docker-lab01-run docker-lab01-check docker-lab01 docker-image-build docker-image-push student-pull student-lab01-build student-lab01-run student-lab01-check student-lab01
 

@@ -66,7 +66,7 @@ docker compose -f docker-compose.student.yml run --rm lab make lab01-build
 For a paid course, publish a prebuilt image:
 
 ```sh
-export LAB_IMAGE=ghcr.io/your-org/linux-edge-lab:lab01
+export LAB_IMAGE=ghcr.io/niuzhanaifu/linux-project-lab:lab-v0.0.1
 make docker-image-build LAB_IMAGE="$LAB_IMAGE"
 make docker-image-push LAB_IMAGE="$LAB_IMAGE"
 ```
