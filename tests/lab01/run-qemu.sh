@@ -10,20 +10,25 @@ KERNEL="${BUILD_DIR}/images/Image"
 ROOTFS="${BUILD_DIR}/images/rootfs.ext2"
 
 if ! command -v "${QEMU_BIN}" >/dev/null 2>&1; then
-    echo "ERROR: ${QEMU_BIN} not found." >&2
-    echo "Run Lab01 through docker-compose.student.yml or pull the latest lab image." >&2
+    echo "LAB01 RUN: FAIL" >&2
+    echo "Reason: ${QEMU_BIN} was not found." >&2
+    echo "Detail: Run Lab01 through docker-compose.student.yml or pull the latest lab image." >&2
     exit 1
 fi
 
 if [ ! -f "${KERNEL}" ]; then
-    echo "ERROR: kernel image not found: ${KERNEL}" >&2
-    echo "Run the Lab01 build target first, normally through docker-compose.student.yml." >&2
+    echo "LAB01 RUN: FAIL" >&2
+    echo "Reason: kernel image was not found." >&2
+    echo "Detail: ${KERNEL}" >&2
+    echo "Action: Run the Lab01 build target first, normally through docker-compose.student.yml." >&2
     exit 1
 fi
 
 if [ ! -f "${ROOTFS}" ]; then
-    echo "ERROR: rootfs image not found: ${ROOTFS}" >&2
-    echo "Run the Lab01 build target first, normally through docker-compose.student.yml." >&2
+    echo "LAB01 RUN: FAIL" >&2
+    echo "Reason: rootfs image was not found." >&2
+    echo "Detail: ${ROOTFS}" >&2
+    echo "Action: Run the Lab01 build target first, normally through docker-compose.student.yml." >&2
     exit 1
 fi
 
@@ -56,12 +61,15 @@ trap cleanup EXIT
 deadline=$((SECONDS + QEMU_TIMEOUT))
 while [ "${SECONDS}" -lt "${deadline}" ]; do
     if grep -q "edge-agent: device_id=" "${LOG_FILE}"; then
-        echo "QEMU reached edge-agent output. Log: ${LOG_FILE}"
+        echo "LAB01 RUN: PASS"
+        echo "Serial log: ${LOG_FILE}"
         exit 0
     fi
 
     if ! kill -0 "${qemu_pid}" >/dev/null 2>&1; then
-        echo "ERROR: QEMU exited before edge-agent output." >&2
+        echo "LAB01 RUN: FAIL" >&2
+        echo "Reason: QEMU exited before edge-agent printed device_id." >&2
+        echo "Serial log: ${LOG_FILE}" >&2
         tail -n 80 "${LOG_FILE}" >&2 || true
         exit 1
     fi
@@ -69,6 +77,8 @@ while [ "${SECONDS}" -lt "${deadline}" ]; do
     sleep 1
 done
 
-echo "ERROR: timeout waiting for edge-agent output." >&2
+echo "LAB01 RUN: FAIL" >&2
+echo "Reason: timed out waiting for edge-agent device_id output." >&2
+echo "Serial log: ${LOG_FILE}" >&2
 tail -n 120 "${LOG_FILE}" >&2 || true
 exit 1

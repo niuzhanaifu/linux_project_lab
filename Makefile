@@ -53,9 +53,7 @@ lab01-check:
 	python3 tests/lab01/check-output.py "$(LAB01_LOG)"
 
 lab01:
-	$(MAKE) lab01-build
-	$(MAKE) lab01-run
-	$(MAKE) lab01-check
+	@bash scripts/lab01.sh
 
 edge-agent-native:
 	$(MAKE) -C apps/edge-agent

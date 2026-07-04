@@ -1,6 +1,7 @@
 .cache/
 artifacts/
 output/
+__pycache__/
 docker/buildroot-dl/*
 !docker/buildroot-dl/.gitkeep
 *.log
